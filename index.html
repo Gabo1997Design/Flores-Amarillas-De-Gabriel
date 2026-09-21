@@ -24,6 +24,46 @@
       color: #333;
     }
 
+    /* Pantalla de inicio para activar música */
+    #welcome-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffe5ec 0%, #ffc6ff 100%);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #welcome-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .start-btn {
+      padding: 16px 32px;
+      background-color: #ffb703;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 183, 3, 0.5);
+      animation: pulse 1.8s infinite ease-in-out;
+      transition: transform 0.2s ease;
+    }
+
+    .start-btn:active {
+      transform: scale(0.95);
+    }
+
     /* Animación de flores cayendo */
     .petal {
       position: absolute;
@@ -46,87 +86,41 @@
 
     /* Contenedor Principal */
     .card {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(8px);
-      padding: 30px 20px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      max-width: 90%;
-      width: 400px;
-      z-index: 10;
-      animation: fadeIn 1.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Ramo de Girasoles en SVG */
-    .sunflower-svg {
-      width: 200px;
-      height: 200px;
-      margin: 0 auto;
-      filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.15));
-      animation: pulse 3s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    h1 {
-      color: #d4a373;
-      font-size: 1.8rem;
-      margin-top: 15px;
-      margin-bottom: 10px;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
-    }
-
-    p {
-      color: #555;
-      font-size: 1.1rem;
-      font-weight: 500;
-    }
-
-    /* Botón de Música */
+      background: rgba(255, 255, 255, 0.85);
     .music-btn {
       margin-top: 20px;
-      padding: 12px 24px;
+      padding: 10px 20px;
       background-color: #ffb703;
       color: #fff;
       border: none;
-      border-radius: 25px;
-      font-size: 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(255, 183, 3, 0.4);
-      transition: all 0.3s ease;
-    }
-
-    .music-btn:hover {
-      background-color: #fb8500;
-      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(255, 183, 3, 0.3);
     }
   </style>
 </head>
 <body>
 
-  <!-- Contenedor del Audio (JVKE - Golden Hour Instrumental) -->
-  <audio id="bg-music" loop>
-    <source src="https://ia801503.us.archive.org/15/items/jvke-golden-hour-instrumental/JVKE%20-%20golden%20hour%20%28instrumental%29.mp3" type="audio/mpeg">
+  <!-- Pantalla de bienvenida interactiva -->
+  <div id="welcome-screen">
+    <h2 style="margin-bottom: 25px; color: #6b705c; font-size: 1.5rem;">Tenes un mensaje especial ✉️</h2>
+    <button class="start-btn" onclick="startExperience()">🌻 Toca aquí para ver 🌻</button>
+  </div>
+
+  <!-- Audio -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="musica.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Contenido principal -->
   <div class="card">
-    <!-- SVG Arte de Ramo de Girasoles -->
     <svg class="sunflower-svg" viewBox="0 0 200 200">
-      <!-- Tallo y Hojas -->
       <path d="M100,120 Q90,160 100,200" stroke="#4A7C59" stroke-width="8" fill="none"/>
       <path d="M100,160 Q70,150 60,170 Q85,175 100,160" fill="#4A7C59"/>
       <path d="M100,145 Q130,135 140,155 Q115,160 100,145" fill="#4A7C59"/>
       
-      <!-- Pétalos -->
       <g fill="#FFC300">
         <ellipse cx="100" cy="50" rx="12" ry="35" />
         <ellipse cx="100" cy="50" rx="12" ry="35" transform="rotate(30 100 100)"/>
@@ -141,7 +135,6 @@
         <ellipse cx="100" cy="50" rx="12" ry="35" transform="rotate(300 100 100)"/>
         <ellipse cx="100" cy="50" rx="12" ry="35" transform="rotate(330 100 100)"/>
       </g>
-      <!-- Centro del Girasol -->
       <circle cx="100" cy="100" r="32" fill="#582F0E"/>
       <circle cx="100" cy="100" r="28" fill="#7F4F24" stroke="#3A1900" stroke-width="2" stroke-dasharray="4"/>
     </svg>
@@ -149,11 +142,28 @@
     <h1>¡Feliz 21 de Septiembre Bonita! 🌻</h1>
     <p>Un detalle especial para alegrar tu día.</p>
 
-    <button class="music-btn" onclick="toggleMusic()">🎵 Reproducir Música</button>
+    <button class="music-btn" id="toggle-btn" onclick="toggleMusic()">⏸️ Pausar Música</button>
   </div>
 
   <script>
-    // Generar animación de flores/pétalos cayendo
+    const music = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    function startExperience() {
+      // Ocultar pantalla de bienvenida
+      document.getElementById('welcome-screen').classList.add('hidden');
+      
+      // Reproducir música inmediatamente
+      music.play().then(() => {
+        isPlaying = true;
+      }).catch(err => {
+        console.log("Error al reproducir audio:", err);
+      });
+
+      // Iniciar lluvia de flores
+      setInterval(createPetal, 300);
+    }
+
     const flowers = ['🌻', '🟡', '✨', '🌼'];
     function createPetal() {
       const petal = document.createElement('div');
@@ -168,22 +178,17 @@
         petal.remove();
       }, 6000);
     }
-    setInterval(createPetal, 300);
-
-    // Control de la Música
-    const music = document.getElementById('bg-music');
-    let isPlaying = false;
 
     function toggleMusic() {
-      const btn = document.querySelector('.music-btn');
-      if (!isPlaying) {
-        music.play();
-        btn.innerText = '⏸️ Pausar Música';
-        isPlaying = true;
-      } else {
+      const btn = document.getElementById('toggle-btn');
+      if (isPlaying) {
         music.pause();
         btn.innerText = '🎵 Reproducir Música';
         isPlaying = false;
+      } else {
+        music.play();
+        btn.innerText = '⏸️ Pausar Música';
+        isPlaying = true;
       }
     }
   </script>
